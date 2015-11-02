@@ -1,0 +1,24 @@
+---
+title: "R Assignment 1"
+author: "Daniel Hong"
+date: "November 1, 2015"
+output: html_document
+---
+Question 1
+i=1
+factorial=1
+for  (i in 1:12)
+{ factorial=factorial*i
+  i<-i+1}
+factorial
+
+Question 2
+seq(20,	50, by = 5)
+
+Question 3
+a <- 2
+b <- 5
+c <- 3
+x1 <- (-1 * b + (( b ^ 2 - (4 * a * c))^.5)) / (2 * a)
+x2 <- (-1 * b - (( b ^ 2 - (4 * a * c))^.5)) / (2 * a)
+print(c(x1, x2))
