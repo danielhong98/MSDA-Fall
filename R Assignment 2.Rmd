@@ -1,0 +1,55 @@
+---
+title: "R Assignment 2"
+author: "Daniel Hong"
+date: "November 8, 2015"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+#Write a function that will calculate n choose r without using the built in choose() or factorial () functions
+#step 1 find a function that will multiply consecutive numbers
+#step 2 calculate n choose r
+#step 3 this function will only work for positive whole numbers and n > r
+
+a <- 1
+b <- 2
+c <- 3
+d <- 4
+e <- 5
+
+prod(1:a)
+prod(1:b)
+prod(1:c)
+prod(1:d)
+prod(1:e)
+
+#inputs
+n=5
+r=3
+
+nfactorial <- prod(1:n) #n factorial
+rfactorial <- prod(1:r) #r factorial
+nminrfactorial <- prod(1:(n-r)) #(n-r) factorial
+
+dhchoose <- nfactorial/(nminrfactorial*rfactorial)
+sprintf("%s choose %s = %s", n, r, dhchoose)
+
+#test results
+#5 choose 3 = 10
+#7 choose 4 = 35
+#10 choose 7 = 120
