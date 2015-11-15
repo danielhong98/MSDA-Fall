@@ -1,0 +1,23 @@
+---
+title: "R Week 3 Assignment"
+author: "Daniel Hong"
+date: "November 15, 2015"
+output: html_document
+---
+
+#User Library plyr - Tools for Splitting, Applying and Combining Data
+library(plyr)
+dat <- data.frame(read.csv("https://raw.githubusercontent.com/danielhong98/MSDA-Fall/master/agaricus-lepiota.data.csv", header = FALSE))
+
+#Create a subset of Column Names - Edible/Poisonous, Shape, Color, Odor
+mushrooms <- subset(dat, select = c(1, 2, 4, 6))
+colnames(mushrooms) <- c("Poisonous", "Cap_Shape", "Cap_Color", "Cap_Odor")
+
+#Provide full name of entries
+mushrooms$Poisonous <- revalue(mushrooms$Poisonous, c("p" = "poisonous", "e" = "edible"))
+mushrooms$Cap_Shape <- revalue(mushrooms$Cap_Shape, c("b" = "bell", "c" = "conical", "x" = "convex", "f" = "flat", "k" = "knobbed", "s" = "sunken"))
+mushrooms$Cap_Color <- revalue(mushrooms$Cap_Color, c("n" = "brown", "b" = "buff","c" = "cinammon", "g" = "gray", "r" = "green", "p" = "pink", "u" = "purple", "e" = "red", "w" = "white", "y" = "yellow"))
+mushrooms$Cap_Odor <- revalue(mushrooms$Cap_Odor, c("a" = "almond", "l" = "anise", "c" = "creosote", "y" = "fishy", "f" = "foul", "m" = "musty", "n" = "none", "p" = "pungent", "s" = "spicy"))
+
+#Show values
+mushrooms[1:50,1:4]
