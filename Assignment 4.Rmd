@@ -1,0 +1,23 @@
+---
+title: "R Week 4 Assignment"
+author: "Daniel Hong"
+date: "December 1, 2015"
+output: html_document
+---
+#Required packages
+require (ggplot2)
+# quantmod - Quantitative Financial Modelling & Trading Framework for R
+library('quantmod')
+#Analysis of Whiting Petroleum (WLL)
+getSymbols("WLL")
+#Prices with Bolinger Bands indicating "Oversold" or "Overbought" price movements
+chartSeries(WLL, subset='last 12 months'); addBBands()
+summary(WLL)
+#Load in WLL prices
+prices <- read.csv(url("https://raw.githubusercontent.com/danielhong98/MSDA-Fall/master/WLLStock.csv"))
+#Histogram - Frequency of Prices
+ggplot(data = prices) + geom_histogram(aes(x=Adj.Close))
+#Boxplot - Prices by Quarter
+ggplot(data = prices, aes(x = Quarter, y = Close)) + geom_boxplot()
+#Scatterplot - Relationship between Open and Close
+plot(prices$Open ~ prices$Close)
