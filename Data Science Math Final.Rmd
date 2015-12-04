@@ -1,0 +1,103 @@
+---
+title: "Data Science Math Final"
+author: "Daniel Hong"
+date: "December 4, 2015"
+output: html_document
+---
+
+require (hflights)
+require (ggplot2)
+require (MASS)
+
+#Define Random Variables X (ArrDelay) and Y (DepDelay)
+X = na.omit(hflights$ArrDelay)
+Y = na.omit(hflights$DepDelay)
+
+#Check for skew - X (ArrDelay), Y (DepDelay)
+summary(X)
+summary(Y)
+qplot(X, geom='density')
+qplot(Y, geom='density')
+
+#3rd quartile of X (ArrDelay)
+quantile(X, .75)
+mean(X)
+SDX <-sqrt(var(X))
+SDX
+
+#2nd quartile
+quantile(Y, .5)
+mean(Y)
+SDX <-sqrt(var(Y))
+SDX
+
+#P(A)
+A <- nrow(subset(hflights, ArrDelay > 11))
+A
+PA <- A / nrow(hflights)
+PA
+
+#P(B)
+B <- nrow(subset(hflights, DepDelay > 0))
+B
+PB <- B / nrow(hflights)
+PB
+
+#P(A)*P(B)
+PA*PB
+
+#Chi Square Test
+chisq.test(hflights$ArrDelay,hflights$DepDelay)
+
+#Univariate Descriptive Statistics and Plots
+#Variance
+var(X)
+#Standard Deviation
+sd(X)
+#Histogram of X
+qplot(X, geom='Histogram')
+
+#Variance
+var(Y)
+#Standard Deviation
+sd(Y)
+#Histogram of Y
+qplot(Y, geom='histogram')
+
+plot(hflights$ArrDelay,hflights$DepDelay)
+
+#95% Confidence Interval for the differnece in means of X and Y
+t.test(X,Y)
+
+#Correlation Matrix
+XYMatrix <- cbind(hflights$ArrDelay,hflights$DepDelay)
+XYCorrMatrix <- cor(XYMatrix, use = "complete")
+XYCorrMatrix
+
+#Test the Hypothesis that the Correlation Between the 2 variables is ZERO and provide a 99% confidence interval
+cor.test(hflights$ArrDelay,hflights$DepDelay, conf.level = 0.99, na.action = "na.exclude")
+
+#Invert the Correlation Matrix (Precision Matrix)
+XYPrecisionMatrix <- solve(XYCorrMatrix)
+XYPrecisionMatrix
+
+#Multiply the correlation matrix by the precision matrix
+XYCorrMatrix %*% XYPrecisionMatrix
+
+#Multiply the precision matrix by the correlation matrix
+XYPrecisionMatrix %*% XYCorrMatrix
+
+#Shift Variable so min > 0
+XShift <- X + (abs(min(X)) + 1)
+summary(XShift)
+
+#Fitdistr
+X = na.omit(X)
+fitdistr(X,"exponential")
+sampledist = rexp(1000,rate=0.0230176344)
+hist(sampledist)
+hist(X)
+qexp(0.05, rate=0.0230176344)
+qexp(0.95, rate=0.0230176344)
+qnorm(0.95,mean(X),sd(X))
+quantile(X, c(0.05,0.95))
