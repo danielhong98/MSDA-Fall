@@ -2,7 +2,7 @@
 title: "R Week 4 Assignment"
 author: "Daniel Hong"
 date: "December 1, 2015"
-output: html_document
+output: pdf_document
 ---
 #Required packages
 require (ggplot2)
