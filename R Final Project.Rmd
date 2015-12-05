@@ -1,0 +1,63 @@
+---
+title: "R Final Project"
+author: "Daniel Hong"
+date: "December 5, 2015"
+output: html_document
+---
+
+#Final project looks at college football games played between 2009 and 2013. Is there a relationship between the distance a "road" team travels and the "home" team margin of victory? The quality of team is not accounted which could be skewing the results. If a superior team is on the road vs. a far lesser team, they are treated as equals in this analysis which is probably not applicable to the "real" world.
+
+#Load packages
+library(plyr)
+library(ggplot2)
+
+#Read data
+CFB <- read.csv("https://raw.githubusercontent.com/danielhong98/MSDA-Fall/3da951541fa121fb59a9cf3f8e7fe01ace774dc8/cfb20092013.csv", header = T)
+
+#Attach data
+attach(CFB)
+
+#Define random variables X (VictoryMargin) and Y (Distance)
+X = na.omit(CFB$Margin)
+Y = na.omit(CFB$Distance)
+
+#Summary
+summary(X)
+summary(Y)
+qplot(X, geom='histogram')
+qplot(Y, geom='histogram')
+
+#Above and below median
+Median <- as.factor(ifelse(Distance <= 520.7, "0-520.7", "520.7+"))
+
+#New column added to full dataset
+CFB <- data.frame(CFB, Median)
+
+#Means by distance
+round(tapply(X, Median, mean),2)
+
+#Frequency plot
+ggplot(CFB, aes(X, color=Median)) + 
+geom_freqpoly(binwidth=0.5, origin=-5.75)
+
+#Box plot
+plot(Median, X)
+
+#T-test
+t.test(X ~ Median, var.equal=T)
+
+#Non-standardized linear model
+model1 <- lm(X ~ Y)
+summary(model1)
+confint(model1)
+
+#Scatterplot 1
+ggplot(CFB, aes(X, Y)) + geom_smooth(method="lm") +
+  scale_x_continuous(breaks=c(0,50,100,150,200,250,300)) +
+labs(Y="Distance (Miles)", X="Margin (Points)", title="Distance (Miles) and Margin of Victory by Home Team")
+
+#Scatterplot2
+ggplot(CFB, aes(X,Y)) + geom_smooth(method="lm") +
+geom_point() + labs(Y="Distance (Miles)", X="Margin (Goals)", title="Distance (Miles) and Margin of Victory by Home Team")
+
+#There does not seem to be any link between distance traveled and margin of victory, however further investigation is required to "normalize" abilities to see if distance matters.
